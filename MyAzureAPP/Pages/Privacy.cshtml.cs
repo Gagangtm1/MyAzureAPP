@@ -17,23 +17,6 @@ namespace MyAzureAPP.Pages
         public List<Employee> employeesList = new List<Employee>();
         public List<Employee> GetData()
         {
-            //List<Employee> employees = new List<Employee>() {
-            //new Employee()
-            //{
-            //    Id = 1,
-            //    Name = "Employee 1",
-            //    Department = "Admin",
-            //    Salary = 15000,
-            //},
-            //     new Employee()
-            //     {
-            //         Id = 2,
-            //         Name = "Employee 2",
-            //         Department = "Admin",
-            //         Salary = 18000,
-            //     },
-            //};
-
             List<Employee> employees = new List<Employee>();
 
             SqlConnection con = new SqlConnection("Server=tcp:azuredatabase1265.database.windows.net,1433;Initial Catalog=AzureDatabase;Persist Security Info=False;User ID=Gagan;Password=Password@1265;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
@@ -61,8 +44,26 @@ namespace MyAzureAPP.Pages
 
         public void OnGet()
         {
+            InsertDataInAzureDatabase();
             employeesList = GetData();
 
+        }
+
+        public void InsertDataInAzureDatabase()
+        {
+            SqlConnection con = new SqlConnection("Server=tcp:azuredatabase1265.database.windows.net,1433;Initial Catalog=AzureDatabase;Persist Security Info=False;User ID=Gagan;Password=Password@1265;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            string query = @"Insert into Employee (EmployeeId,Name,DepartmentName,Salary) values (@id,@name,@depName,@salary)";
+            
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@id", 12456);
+            cmd.Parameters.AddWithValue("@name", "Via Application");
+            cmd.Parameters.AddWithValue("@depName", "Via- App - Department Name");
+            cmd.Parameters.AddWithValue("@salary", 22123);
+            con.Open();
+
+            int result = cmd.ExecuteNonQuery();
+
+ 
         }
     }
 }
